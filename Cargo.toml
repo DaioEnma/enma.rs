@@ -9,7 +9,7 @@ homepage = "https://github.com/DaioEnma/enma.rs"
 repository = "https://github.com/DaioEnma/enma.rs"
 description = "Rust crate that provides high-level APIs to obtain information on anime and manga."
 keywords = ["anime", "manga", "rust", "scraper", "otaku"]
-categories = ["scrpaer", "anime", "manga", "entertainment"]
+categories = ["text-processing", "web-programming"]
 
 [dependencies]
 # reqwest = "0.12.11"
