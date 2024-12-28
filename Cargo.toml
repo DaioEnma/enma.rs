@@ -5,6 +5,7 @@ edition = "2021"
 license = "MIT"
 readme = "README.md"
 authors = ["DaioEnma"]
+homepage = "https://github.com/DaioEnma/enma.rs"
 repository = "https://github.com/DaioEnma/enma.rs"
 description = "Rust crate that provides high-level APIs to obtain information on anime and manga."
 keywords = ["anime", "manga", "rust", "scraper", "otaku"]
