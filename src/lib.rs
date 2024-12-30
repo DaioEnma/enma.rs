@@ -1,6 +1,11 @@
 pub mod anime;
 pub mod manga;
+mod util;
 
-pub fn enma_log() {
-    println!("Rust crate that provides high-level APIs to obtain information on anime and manga.")
+pub struct EnmaError;
+
+impl EnmaError {
+    pub fn new() -> EnmaError {
+        EnmaError {}
+    }
 }
