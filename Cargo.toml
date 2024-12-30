@@ -12,4 +12,4 @@ keywords = ["anime", "manga", "rust", "scraper", "otaku"]
 categories = ["text-processing", "web-programming"]
 
 [dependencies]
-# reqwest = "0.12.11"
+reqwest = "0.12.11"
