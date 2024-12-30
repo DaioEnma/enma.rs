@@ -1,15 +1,10 @@
-pub struct HiAnime {}
+mod extractors;
+pub mod hianime;
 
-impl HiAnime {
-    pub fn new() -> HiAnime {
-        return HiAnime {};
-    }
-}
+// pub struct Anicrush {}
 
-pub struct Anicrush {}
-
-impl Anicrush {
-    pub fn new() -> Anicrush {
-        return Anicrush {};
-    }
-}
+// impl Anicrush {
+//     pub fn new() -> Anicrush {
+//         return Anicrush {};
+//     }
+// }
