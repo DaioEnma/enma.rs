@@ -1,15 +1,9 @@
-pub struct MangaDex {}
+pub mod mangareader;
 
-impl MangaDex {
-    pub fn new() -> MangaDex {
-        return MangaDex {};
-    }
-}
+// pub struct MangaDex {}
 
-pub struct MangaReader {}
-
-impl MangaReader {
-    pub fn new() -> MangaReader {
-        return MangaReader {};
-    }
-}
+// impl MangaDex {
+//     pub fn new() -> MangaDex {
+//         return MangaDex {};
+//     }
+// }
