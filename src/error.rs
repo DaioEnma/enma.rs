@@ -65,6 +65,7 @@ impl ErrorDetails {
     }
 }
 
+/// Result<T, [EnmaError]>
 pub type EnmaResult<T> = std::result::Result<T, EnmaError>;
 
 /// Custom error to handle different types of errors
@@ -77,6 +78,9 @@ pub enum EnmaError {
         #[source]
         source: reqwest::Error,
     },
+
+    #[error("<{}>: SrcParseError {}", details.provider_parser, details.status)]
+    SrcParseError { details: ErrorDetails },
 
     #[error("<{}>: ParseIntError {}", details.provider_parser, details.status)]
     ParseIntError {
@@ -102,6 +106,20 @@ impl EnmaError {
                 status,
             ),
             source,
+        };
+    }
+
+    pub fn src_parse_error(
+        provider_parser: &'static str,
+        err_msg: Option<&'static str>,
+        status: Option<StatusCode>,
+    ) -> Self {
+        return Self::SrcParseError {
+            details: ErrorDetails::new(
+                provider_parser,
+                err_msg.or(Some("SrcParseError: Failed to parse source data")),
+                status,
+            ),
         };
     }
 
