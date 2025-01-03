@@ -71,41 +71,35 @@ pub type EnmaResult<T> = std::result::Result<T, EnmaError>;
 /// Custom error to handle different types of errors
 #[derive(Debug, ThisError)]
 pub enum EnmaError {
-    // eg: <HiAnime:get_home_page>: 500 SrcFetchError
-    #[error("<{}>: SrcFetchError {}", details.provider_parser, details.status)]
-    SrcFetchError {
-        details: ErrorDetails,
-        #[source]
-        source: reqwest::Error,
-    },
+    /// represents raw source data fetch error
+    #[error("<{}>: {} SrcFetchError", details.provider_parser, details.status)]
+    SrcFetchError { details: ErrorDetails },
 
-    #[error("<{}>: SrcParseError {}", details.provider_parser, details.status)]
+    /// represents raw source data parse error
+    #[error("<{}>: {} SrcParseError", details.provider_parser, details.status)]
     SrcParseError { details: ErrorDetails },
 
-    #[error("<{}>: ParseIntError {}", details.provider_parser, details.status)]
-    ParseIntError {
-        details: ErrorDetails,
-        #[source]
-        source: std::num::ParseIntError,
-    },
+    /// represents integer parsing error
+    #[error("<{}>: {} ParseIntError", details.provider_parser, details.status)]
+    ParseIntError { details: ErrorDetails },
 
-    #[error("<{}>: UnknownError {}", details.provider_parser, details.status)]
+    /// represents miscellaneous errors
+    #[error("<{}>: {} UnknownError", details.provider_parser, details.status)]
     UnknownError { details: ErrorDetails },
 }
 
 impl EnmaError {
     pub fn src_fetch_error(
-        source: reqwest::Error,
         provider_parser: &'static str,
+        err_msg: Option<&'static str>,
         status: Option<StatusCode>,
     ) -> Self {
         return Self::SrcFetchError {
             details: ErrorDetails::new(
                 provider_parser,
-                Some("SrcFetchError: Failed to fetch source data"),
+                err_msg.or(Some("SrcFetchError: Failed to fetch source data")),
                 status,
             ),
-            source,
         };
     }
 
@@ -124,17 +118,16 @@ impl EnmaError {
     }
 
     pub fn parse_int_error(
-        source: std::num::ParseIntError,
         provider_parser: &'static str,
+        err_msg: Option<&'static str>,
         status: Option<StatusCode>,
     ) -> Self {
         return Self::ParseIntError {
             details: ErrorDetails::new(
                 provider_parser,
-                Some("ParseIntError: Failed to parse integer value"),
+                err_msg.or(Some("ParseIntError: Failed to parse integer value")),
                 status,
             ),
-            source,
         };
     }
 
