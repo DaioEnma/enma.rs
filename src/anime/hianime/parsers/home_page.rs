@@ -5,15 +5,19 @@ impl Scraper {
     pub async fn get_home_page(&self) -> EnmaResult<String> {
         let provider_parser: &'static str = "HiAnime:get_home_page";
 
-        let home_page_html = self.client.get(SRC_HOME_URL).send().await.map_err(|err| {
-            return EnmaError::src_fetch_error(err, provider_parser, None);
-        });
+        let resp = self
+            .client
+            .get(SRC_HOME_URL)
+            .send()
+            .await
+            .map_err(|_| EnmaError::src_fetch_error(provider_parser, None, None));
 
-        let data = home_page_html?.text().await.map_err(|_| {
-            return EnmaError::src_parse_error(provider_parser, None, None);
-        })?;
+        let home_page_html = resp?
+            .text()
+            .await
+            .map_err(|_| EnmaError::src_parse_error(provider_parser, None, None))?;
 
-        return Ok(data);
+        return Ok(home_page_html);
     }
 }
 
@@ -21,7 +25,7 @@ impl Scraper {
 mod test {
     use crate::anime::hianime;
 
-    // cargo test  --lib -- anime::hianime::parsers::home_page::test --show-output
+    // cargo test --lib -- anime::hianime::parsers::home_page::test --show-output
     #[tokio::test]
     async fn test_get_home_page() {
         let hianime = hianime::Scraper::new();
