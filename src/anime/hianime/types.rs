@@ -196,10 +196,6 @@ pub static ANIME_CATEGORIES: Lazy<HashSet<&'static str>> = Lazy::new(|| {
     .collect();
 });
 
-pub fn d() -> bool {
-    return ANIME_CATEGORIES.contains("asdad");
-}
-
 pub static ANIME_SERVERS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
     return ["hd-1", "hd-2", "megacloud", "streamsb", "streamtape"]
         .into_iter()
