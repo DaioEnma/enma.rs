@@ -202,7 +202,7 @@ pub static ANIME_SERVERS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
         .collect();
 });
 
-#[derive(Debug, Serialize, Deserialize)]
+// #[derive(Debug, Serialize, Deserialize)]
 pub enum Server {
     VidStreaming,
     MegaCloud,
