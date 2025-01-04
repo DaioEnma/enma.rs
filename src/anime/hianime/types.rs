@@ -147,7 +147,6 @@ pub struct AnimeCharacter {
     pub poster: Option<String>,
     pub cast: Option<String>,
 }
-//
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AnimeSearchSuggestion {
