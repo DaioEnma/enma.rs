@@ -17,14 +17,14 @@ struct RawData {
 }
 
 impl Scraper {
-    pub async fn get_search_suggestions(&self, q: &str) -> EnmaResult<ScrapedSearchSuggestion> {
+    pub async fn get_search_suggestions(&self, query: &str) -> EnmaResult<ScrapedSearchSuggestion> {
         const PROVIDER_PARSER: &'static str = "hianime:get_search_suggestions";
         let mut res = ScrapedSearchSuggestion::default();
 
         let url = format!(
             "{}?keyword={}",
             HiAnimeUtils::SearchSuggestionUrl.value(),
-            EnmaUtils::encode_uri_component(PROVIDER_PARSER, q.to_string())?
+            EnmaUtils::encode_uri_component(PROVIDER_PARSER, query.to_string())?
         );
         let headers: HeaderMap = [
             (ACCEPT, HeaderValue::from_static("*/*")),
