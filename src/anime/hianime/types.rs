@@ -164,13 +164,13 @@ pub struct AnimeCharacter {
     pub cast: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct AnimeSearchSuggestion {
     pub id: Option<String>,
     pub name: Option<String>,
     pub poster: Option<String>,
     pub jname: Option<String>,
-    pub more_info: Vec<String>,
+    pub other_info: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
