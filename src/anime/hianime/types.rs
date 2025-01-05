@@ -5,7 +5,7 @@ use std::collections::HashSet;
 
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct Anime {
     pub id: Option<String>,
     pub name: Option<String>,
@@ -19,19 +19,26 @@ pub struct Anime {
     pub episodes: Episodes,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct Episodes {
-    pub sub: u16,
-    pub dub: u16,
+    pub sub: Option<u16>,
+    pub dub: Option<u16>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct Top10AnimesWithPeriod {
+    pub today: Vec<Top10Anime>,
+    pub week: Vec<Top10Anime>,
+    pub month: Vec<Top10Anime>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct Top10Anime {
     pub id: Option<String>,
     pub name: Option<String>,
     pub poster: Option<String>,
     pub jname: Option<String>,
-    pub rank: Option<String>,
+    pub rank: Option<u32>,
     pub episodes: Episodes,
 }
 
@@ -42,6 +49,15 @@ pub enum Top10AnimePeriod {
 }
 
 impl Top10AnimePeriod {
+    pub fn from(period: &String) -> Self {
+        match period.as_str() {
+            "day" => Self::Day,
+            "week" => Self::Week,
+            "month" => Self::Month,
+            _ => Self::Day,
+        }
+    }
+
     pub fn to_str(&self) -> &'static str {
         match self {
             Self::Day => "day",
@@ -62,7 +78,7 @@ pub struct MostPopularAnime {
     pub episodes: Episodes,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct SpotlightAnime {
     pub id: Option<String>,
     pub name: Option<String>,
@@ -70,19 +86,19 @@ pub struct SpotlightAnime {
     pub jname: Option<String>,
     #[serde(rename = "type")]
     pub anime_type: Option<String>,
-    pub rank: Option<String>,
+    pub rank: Option<u32>,
     pub description: Option<String>,
     pub other_info: Vec<String>,
     pub episodes: Episodes,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct TrendingAnime {
     pub id: Option<String>,
     pub name: Option<String>,
     pub poster: Option<String>,
     pub jname: Option<String>,
-    pub rank: Option<String>,
+    pub rank: Option<u32>,
 }
 
 pub type RecommendedAnime = Anime;
