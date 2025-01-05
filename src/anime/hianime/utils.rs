@@ -1,3 +1,5 @@
+#![allow(dead_code)] // TODO: remove this
+
 use super::types::{
     Anime, Episodes, MostPopularAnime, SpotlightAnime, Top10Anime, Top10AnimePeriod,
     Top10AnimesWithPeriod, TrendingAnime,
@@ -9,6 +11,7 @@ pub enum HiAnimeUtils {
     HomeUrl,
     AjaxUrl,
     SearchUrl,
+    SearchSuggestionUrl,
 }
 
 impl HiAnimeUtils {
@@ -18,6 +21,7 @@ impl HiAnimeUtils {
             HiAnimeUtils::HomeUrl => "https://hianime.to/home",
             HiAnimeUtils::AjaxUrl => "https://hianime.to/ajax",
             HiAnimeUtils::SearchUrl => "https://hianime.to/search",
+            HiAnimeUtils::SearchSuggestionUrl => "https://hianime.to/ajax/search/suggest",
         }
     }
 
