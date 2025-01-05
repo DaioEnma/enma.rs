@@ -7,7 +7,7 @@ readme = "README.md"
 authors = ["Ritesh Ghosh ghoshritesh55@gmail.com"]
 homepage = "https://lib.rs/enma"
 repository = "https://github.com/DaioEnma/enma.rs"
-description = "Rust crate that provides high-level APIs to obtain information on anime and manga."
+description = "A Rust crate serving anime and manga information 📦"
 keywords = ["anime", "manga", "rust", "scraper", "otaku"]
 categories = ["text-processing", "web-programming"]
 
