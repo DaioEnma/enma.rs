@@ -44,9 +44,9 @@ impl ErrorDetails {
 
     fn get_json(&self) -> String {
         match to_string_pretty(self) {
-            Ok(json) => json,
+            Ok(stringified_json) => stringified_json,
             Err(_) => {
-                println!("error occured while serializing custom `EnmaError` into json");
+                println!("error occured while serializing custom error details into json");
                 "{\"status\": 500}".to_string()
             }
         }
@@ -56,7 +56,7 @@ impl ErrorDetails {
         const ANSI_ESC_CODE_COLOR_RED: &str = "\x1b[31m";
         const ANSI_ESC_CODE_COLOR_RESET: &str = "\x1b[0m";
 
-        println!(
+        eprintln!(
             "{}{}{}",
             ANSI_ESC_CODE_COLOR_RED,
             self.get_json(),
@@ -82,6 +82,10 @@ pub enum EnmaError {
     /// represents integer parsing error
     #[error("<{}>: {} ParseIntError", details.provider_parser, details.status)]
     ParseIntError { details: ErrorDetails },
+
+    /// represents json serializing or deserializing error
+    #[error("<{}>: {} JsonSerDeError", details.provider_parser, details.status)]
+    JsonSerDeError { details: ErrorDetails },
 
     /// represents miscellaneous errors
     #[error("<{}>: {} UnknownError", details.provider_parser, details.status)]
@@ -111,7 +115,7 @@ impl EnmaError {
         return Self::SrcParseError {
             details: ErrorDetails::new(
                 provider_parser,
-                err_msg.or(Some("SrcParseError: Failed to parse source data")),
+                err_msg.or(Some("SrcParseError: Failed to parse fetched source data")),
                 status,
             ),
         };
@@ -126,6 +130,22 @@ impl EnmaError {
             details: ErrorDetails::new(
                 provider_parser,
                 err_msg.or(Some("ParseIntError: Failed to parse integer value")),
+                status,
+            ),
+        };
+    }
+
+    pub fn json_serde_error(
+        provider_parser: &'static str,
+        err_msg: Option<&'static str>,
+        status: Option<StatusCode>,
+    ) -> Self {
+        return Self::JsonSerDeError {
+            details: ErrorDetails::new(
+                provider_parser,
+                err_msg.or(Some(
+                    "JsonSerDeError: Failed to serialize or deserialize json",
+                )),
                 status,
             ),
         };
