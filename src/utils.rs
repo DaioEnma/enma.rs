@@ -1,21 +1,27 @@
+#![allow(dead_code)] // TODO: remove this
+
 use crate::error::{EnmaError, EnmaResult};
 use reqwest::{
     header::{HeaderMap, HeaderValue, ACCEPT, ACCEPT_ENCODING, USER_AGENT},
-    Client,
+    Client, StatusCode,
 };
+use serde::de::DeserializeOwned;
+use urlencoding::{decode, encode};
 
 pub enum EnmaUtils {
     AcceptHeader,
     UserAgentHeader,
     AcceptEncodingHeader,
+    XRequestedWithHeader,
 }
 
 impl EnmaUtils {
     pub fn value(&self) -> &'static str {
         match self {
-            Self::AcceptHeader => "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-            Self::UserAgentHeader => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",  
-            Self::AcceptEncodingHeader => "gzip, deflate, br",
+            EnmaUtils::AcceptHeader => "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+            EnmaUtils::UserAgentHeader => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",  
+            EnmaUtils::AcceptEncodingHeader => "gzip, deflate, br",
+            EnmaUtils::XRequestedWithHeader => "XMLHttpRequest",
         }
     }
 
@@ -53,21 +59,70 @@ impl EnmaUtils {
             .build()
             .expect("Could not initialize HTTP client");
     }
+
+    pub fn encode_uri_component(
+        provider_parser: &'static str,
+        raw_string: String,
+    ) -> EnmaResult<String> {
+        let encoded_str = encode(raw_string.trim()).into_owned();
+
+        if encoded_str.is_empty() {
+            return Err(EnmaError::unknown_error(
+                provider_parser,
+                Some("ParsingError: encoded string is empty"),
+                Some(StatusCode::BAD_REQUEST),
+            ));
+        }
+
+        Ok(encoded_str)
+    }
+
+    pub fn decode_uri_component(
+        provider_parser: &'static str,
+        raw_string: String,
+    ) -> EnmaResult<String> {
+        let decoded_str = decode(raw_string.trim())
+            .map_err(|_| {
+                EnmaError::unknown_error(
+                    provider_parser,
+                    Some("ParsingError: failed to parse raw string"),
+                    Some(StatusCode::BAD_REQUEST),
+                )
+            })?
+            .into_owned();
+
+        if decoded_str.is_empty() {
+            return Err(EnmaError::unknown_error(
+                provider_parser,
+                Some("ParsingError: decoded string is empty"),
+                Some(StatusCode::BAD_REQUEST),
+            ));
+        }
+
+        Ok(decoded_str)
+    }
 }
 
-pub trait HtmlLoader {
+pub trait EnmaClient {
     async fn get_html(
         &self,
-        url: &'static str,
+        url: String,
         headers: Option<HeaderMap>,
         provider_parser: &'static str,
     ) -> EnmaResult<String>;
+
+    async fn get_json<T: DeserializeOwned>(
+        &self,
+        url: String,
+        headers: Option<HeaderMap>,
+        provider_parser: &'static str,
+    ) -> EnmaResult<T>;
 }
 
-impl HtmlLoader for Client {
+impl EnmaClient for Client {
     async fn get_html(
         &self,
-        url: &'static str,
+        url: String,
         headers: Option<HeaderMap>,
         provider_parser: &'static str,
     ) -> EnmaResult<String> {
@@ -91,5 +146,29 @@ impl HtmlLoader for Client {
         }
 
         return Ok(html);
+    }
+
+    async fn get_json<T: DeserializeOwned>(
+        &self,
+        url: String,
+        headers: Option<HeaderMap>,
+        provider_parser: &'static str,
+    ) -> EnmaResult<T> {
+        let response = match self
+            .get(url)
+            .headers(headers.unwrap_or_default())
+            .send()
+            .await
+        {
+            Ok(resp) => resp,
+            Err(_) => return Err(EnmaError::src_fetch_error(provider_parser, None, None)),
+        };
+
+        let data = response
+            .json::<T>()
+            .await
+            .map_err(|_| EnmaError::src_parse_error(provider_parser, None, None))?;
+
+        Ok(data)
     }
 }
