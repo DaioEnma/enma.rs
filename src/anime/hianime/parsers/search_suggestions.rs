@@ -1,11 +1,13 @@
-use super::{Scraper, SRC_AJAX_URL, SRC_BASE_URL, SRC_HOME_URL, SRC_SEARCH_URL};
+use super::{HiAnimeUtils, Scraper};
 
 impl Scraper {
-    pub fn get_search_suggestions(&self, q: &str) {
+    pub async fn get_search_suggestions(&self, q: &str) {
         // self.client.get(SRC_SEARCH_URL);
         println!(
-            "{}{}{}{} {}",
-            SRC_SEARCH_URL, SRC_AJAX_URL, SRC_BASE_URL, SRC_HOME_URL, q
+            "{} {} {}",
+            HiAnimeUtils::AjaxUrl.value(),
+            HiAnimeUtils::SearchUrl.value(),
+            q
         );
         println!("search_suggestions")
     }
