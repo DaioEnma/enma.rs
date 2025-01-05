@@ -82,11 +82,13 @@ impl Scraper {
             let other_info = el
                 .select(other_info_selector)
                 .next()
-                .unwrap()
-                .text()
-                .filter(|s| !s.trim().is_empty())
-                .map(|s| s.to_string())
-                .collect::<Vec<String>>();
+                .map(|el| {
+                    el.text()
+                        .filter(|s| !s.trim().is_empty())
+                        .map(|s| s.to_string())
+                        .collect::<Vec<String>>()
+                })
+                .unwrap_or_default();
 
             res.suggestions.push(AnimeSearchSuggestion {
                 id,
