@@ -11,20 +11,31 @@ pub enum EnmaUtils {
 }
 
 impl EnmaUtils {
+    pub fn value(&self) -> &'static str {
+        match self {
+            Self::AcceptHeader => "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+            Self::UserAgentHeader => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",  
+            Self::AcceptEncodingHeader => "gzip, deflate, br",
+        }
+    }
+
     pub fn new_http_client(req_headers: Option<HeaderMap>) -> Client {
-        let mut headers = HeaderMap::new();
-        headers.insert(
-            USER_AGENT,
-            HeaderValue::from_static(EnmaUtils::UserAgentHeader.value()),
-        );
-        headers.insert(
-            ACCEPT,
-            HeaderValue::from_static(EnmaUtils::AcceptHeader.value()),
-        );
-        headers.insert(
-            ACCEPT_ENCODING,
-            HeaderValue::from_static(EnmaUtils::AcceptEncodingHeader.value()),
-        );
+        let mut headers: HeaderMap = [
+            (
+                USER_AGENT,
+                HeaderValue::from_static(EnmaUtils::UserAgentHeader.value()),
+            ),
+            (
+                ACCEPT,
+                HeaderValue::from_static(EnmaUtils::AcceptHeader.value()),
+            ),
+            (
+                ACCEPT_ENCODING,
+                HeaderValue::from_static(EnmaUtils::AcceptEncodingHeader.value()),
+            ),
+        ]
+        .into_iter()
+        .collect();
 
         if let Some(r_headers) = req_headers {
             for (k, v) in r_headers {
@@ -41,14 +52,6 @@ impl EnmaUtils {
             .default_headers(headers)
             .build()
             .expect("Could not initialize HTTP client");
-    }
-
-    pub fn value(&self) -> &'static str {
-        match self {
-            Self::AcceptHeader => "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-            Self::UserAgentHeader => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",  
-            Self::AcceptEncodingHeader => "gzip, deflate, br",
-        }
     }
 }
 
@@ -82,6 +85,10 @@ impl HtmlLoader for Client {
             .text()
             .await
             .map_err(|_| EnmaError::src_parse_error(provider_parser, None, None))?;
+
+        if html.is_empty() {
+            return Err(EnmaError::src_parse_error(provider_parser, None, None));
+        }
 
         return Ok(html);
     }
