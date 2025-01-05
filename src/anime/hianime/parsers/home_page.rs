@@ -1,36 +1,100 @@
-use super::{Scraper, SRC_HOME_URL};
-use crate::error::{EnmaError, EnmaResult};
+use scraper::{Html, Selector};
+
+use crate::{
+    anime::hianime::{parsers::types::ScrapedHomePage, utils::HiAnimeUtils, Scraper},
+    error::EnmaResult,
+    utils::HtmlLoader,
+};
 
 impl Scraper {
-    pub async fn get_home_page(&self) -> EnmaResult<String> {
-        let provider_parser: &'static str = "HiAnime:get_home_page";
+    pub async fn get_home_page(&self) -> EnmaResult<ScrapedHomePage> {
+        const PROVIDER_PARSER: &'static str = "hianime:get_home_page";
+        let mut data = ScrapedHomePage {
+            genres: Vec::with_capacity(41),
+            ..Default::default()
+        };
 
-        let resp = self
+        let trending_selector =
+            &Selector::parse("#trending-home .swiper-wrapper .swiper-slide").unwrap();
+        let spotlight_selector = &Selector::parse("#slider .swiper-wrapper .swiper-slide").unwrap();
+        let latest_episode_selector = &Selector::parse(
+            "#main-content .block_area_home:nth-of-type(1) .tab-content .film_list-wrap .flw-item",
+        )
+        .unwrap();
+        let top_upcoming_selector = &Selector::parse(
+            "#main-content .block_area_home:nth-of-type(3) .tab-content .film_list-wrap .flw-item",
+        )
+        .unwrap();
+        let genre_selector = &Selector::parse(
+            "#main-sidebar .block_area.block_area_sidebar.block_area-genres .sb-genre-list li",
+        )
+        .unwrap();
+        let most_viewed_selector =
+            &Selector::parse("#main-sidebar .block_area-realtime [id^=\"top-viewed-\"]").unwrap();
+
+        let top_airing_selector =
+            &Selector::parse("#anime-featured .row div:nth-of-type(1) .anif-block-ul ul li")
+                .unwrap();
+        let most_popular_selector =
+            &Selector::parse("#anime-featured .row div:nth-of-type(2) .anif-block-ul ul li")
+                .unwrap();
+        let most_favorite_selector =
+            &Selector::parse("#anime-featured .row div:nth-of-type(3) .anif-block-ul ul li")
+                .unwrap();
+        let latest_completed_selector =
+            &Selector::parse("#anime-featured .row div:nth-of-type(4) .anif-block-ul ul li")
+                .unwrap();
+
+        // raw html page
+        let page = self
             .client
-            .get(SRC_HOME_URL)
-            .send()
-            .await
-            .map_err(|_| EnmaError::src_fetch_error(provider_parser, None, None));
+            .get_html(HiAnimeUtils::HomeUrl.value(), None, PROVIDER_PARSER)
+            .await?;
 
-        let home_page_html = resp?
-            .text()
-            .await
-            .map_err(|_| EnmaError::src_parse_error(provider_parser, None, None))?;
+        let document = Html::parse_document(&page);
 
-        return Ok(home_page_html);
+        data.spotlight_animes =
+            HiAnimeUtils::extract_spotlight_animes(&document, spotlight_selector);
+
+        data.trending_animes = HiAnimeUtils::extract_trending_anime(&document, trending_selector);
+        data.latest_episode_animes =
+            HiAnimeUtils::extract_animes(&document, latest_episode_selector);
+        data.top_upcoming_animes = HiAnimeUtils::extract_animes(&document, top_upcoming_selector);
+
+        // genres
+        for el in document.select(genre_selector) {
+            if let Some(genre) = el.text().next().map(|s| s.to_string()) {
+                data.genres.push(genre);
+            }
+        }
+
+        data.top10_animes = HiAnimeUtils::extract_top10_animes(&document, most_viewed_selector);
+
+        data.top_airing_animes =
+            HiAnimeUtils::extract_most_popular_anime(&document, top_airing_selector);
+        data.most_popular_animes =
+            HiAnimeUtils::extract_most_popular_anime(&document, most_popular_selector);
+        data.most_favorite_animes =
+            HiAnimeUtils::extract_most_popular_anime(&document, most_favorite_selector);
+        data.latest_completed_animes =
+            HiAnimeUtils::extract_most_popular_anime(&document, latest_completed_selector);
+
+        return Ok(data);
     }
 }
 
 #[cfg(test)]
 mod test {
     use crate::anime::hianime;
+    use serde_json::to_string_pretty;
 
     // cargo test --lib -- anime::hianime::parsers::home_page::test --show-output
     #[tokio::test]
     async fn test_get_home_page() {
         let hianime = hianime::Scraper::new();
         match hianime.get_home_page().await {
-            Ok(data) => println!("{data}"),
+            Ok(data) => println!("{}", to_string_pretty(&data).unwrap()),
+            // Ok(_) => (),
             Err(e) => eprintln!("error {}", e),
         }
     }
