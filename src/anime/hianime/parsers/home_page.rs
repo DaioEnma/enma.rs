@@ -1,15 +1,14 @@
-use scraper::{Html, Selector};
-
 use crate::{
     anime::hianime::{parsers::types::ScrapedHomePage, utils::HiAnimeUtils, Scraper},
     error::EnmaResult,
-    utils::HtmlLoader,
+    utils::EnmaClient,
 };
+use scraper::{Html, Selector};
 
 impl Scraper {
     pub async fn get_home_page(&self) -> EnmaResult<ScrapedHomePage> {
         const PROVIDER_PARSER: &'static str = "hianime:get_home_page";
-        let mut data = ScrapedHomePage {
+        let mut res = ScrapedHomePage {
             genres: Vec::with_capacity(41),
             ..Default::default()
         };
@@ -48,38 +47,42 @@ impl Scraper {
         // raw html page
         let page = self
             .client
-            .get_html(HiAnimeUtils::HomeUrl.value(), None, PROVIDER_PARSER)
+            .get_html(
+                HiAnimeUtils::HomeUrl.value().to_string(),
+                None,
+                PROVIDER_PARSER,
+            )
             .await?;
 
         let document = Html::parse_document(&page);
 
-        data.spotlight_animes =
+        res.spotlight_animes =
             HiAnimeUtils::extract_spotlight_animes(&document, spotlight_selector);
 
-        data.trending_animes = HiAnimeUtils::extract_trending_anime(&document, trending_selector);
-        data.latest_episode_animes =
+        res.trending_animes = HiAnimeUtils::extract_trending_anime(&document, trending_selector);
+        res.latest_episode_animes =
             HiAnimeUtils::extract_animes(&document, latest_episode_selector);
-        data.top_upcoming_animes = HiAnimeUtils::extract_animes(&document, top_upcoming_selector);
+        res.top_upcoming_animes = HiAnimeUtils::extract_animes(&document, top_upcoming_selector);
 
         // genres
         for el in document.select(genre_selector) {
             if let Some(genre) = el.text().next().map(|s| s.to_string()) {
-                data.genres.push(genre);
+                res.genres.push(genre);
             }
         }
 
-        data.top10_animes = HiAnimeUtils::extract_top10_animes(&document, most_viewed_selector);
+        res.top10_animes = HiAnimeUtils::extract_top10_animes(&document, most_viewed_selector);
 
-        data.top_airing_animes =
+        res.top_airing_animes =
             HiAnimeUtils::extract_most_popular_anime(&document, top_airing_selector);
-        data.most_popular_animes =
+        res.most_popular_animes =
             HiAnimeUtils::extract_most_popular_anime(&document, most_popular_selector);
-        data.most_favorite_animes =
+        res.most_favorite_animes =
             HiAnimeUtils::extract_most_popular_anime(&document, most_favorite_selector);
-        data.latest_completed_animes =
+        res.latest_completed_animes =
             HiAnimeUtils::extract_most_popular_anime(&document, latest_completed_selector);
 
-        return Ok(data);
+        return Ok(res);
     }
 }
 
