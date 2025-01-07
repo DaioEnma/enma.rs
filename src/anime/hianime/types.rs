@@ -218,6 +218,24 @@ pub static ANIME_SERVERS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
         .collect();
 });
 
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct QtipAnime {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub mal_score: Option<f64>,
+    pub quality: Option<String>,
+    pub episodes: Episodes,
+    #[serde(rename = "type")]
+    pub anime_type: Option<String>,
+    pub description: Option<String>,
+
+    pub jname: Option<String>,
+    pub synonyms: Option<String>,
+    pub aired: Option<String>,
+    pub status: Option<String>,
+    pub genres: Vec<String>,
+}
+
 // #[derive(Debug, Serialize, Deserialize)]
 pub enum Server {
     VidStreaming,
