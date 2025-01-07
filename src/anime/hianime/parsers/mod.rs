@@ -8,6 +8,7 @@ mod types;
 pub use types::*;
 
 mod az_list;
+mod category;
 mod home_page;
 mod qtip;
 mod search_suggestions;
