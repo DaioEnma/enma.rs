@@ -169,7 +169,14 @@ mod test {
 
         match hianime.get_qtip_info(anime_id).await {
             // Ok(_) => (),
-            Ok(data) => println!("{}", to_string_pretty(&data).unwrap()),
+            Ok(data) => {
+                println!("{}", to_string_pretty(&data).unwrap());
+
+                assert_ne!(data.anime.id, None);
+                assert_ne!(data.anime.name, None);
+                assert_ne!(data.anime.description, None);
+                assert_ne!(data.anime.genres.len(), 0);
+            }
             Err(e) => eprintln!("{}", e),
         }
     }

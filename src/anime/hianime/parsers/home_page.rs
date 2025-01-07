@@ -91,7 +91,23 @@ mod test {
     async fn test_get_home_page() {
         let hianime = hianime::Scraper::new();
         match hianime.get_home_page().await {
-            Ok(data) => println!("{}", to_string_pretty(&data).unwrap()),
+            Ok(data) => {
+                println!("{}", to_string_pretty(&data).unwrap());
+
+                assert_ne!(data.spotlight_animes.len(), 0);
+                assert_ne!(data.trending_animes.len(), 0);
+                assert_ne!(data.latest_episode_animes.len(), 0);
+                assert_ne!(data.top_upcoming_animes.len(), 0);
+                assert_ne!(data.top_airing_animes.len(), 0);
+                assert_ne!(data.most_favorite_animes.len(), 0);
+                assert_ne!(data.most_popular_animes.len(), 0);
+                assert_ne!(data.latest_completed_animes.len(), 0);
+                assert_ne!(data.genres.len(), 0);
+
+                assert_ne!(data.top10_animes.today.len(), 0);
+                assert_ne!(data.top10_animes.week.len(), 0);
+                assert_ne!(data.top10_animes.month.len(), 0);
+            }
             // Ok(_) => (),
             Err(e) => eprintln!("error {}", e),
         }

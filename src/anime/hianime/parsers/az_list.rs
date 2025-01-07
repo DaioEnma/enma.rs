@@ -68,7 +68,13 @@ mod test {
 
         match hianime.get_az_list(sort_option, page_number).await {
             // Ok(_) => (),
-            Ok(data) => println!("{}", to_string_pretty(&data).unwrap()),
+            Ok(data) => {
+                println!("{}", to_string_pretty(&data).unwrap());
+
+                assert_ne!(data.animes.len(), 0);
+                assert_eq!(data.total_pages, 3);
+                assert_eq!(data.has_next_page, true);
+            }
             Err(e) => eprintln!("{}", e),
         }
     }

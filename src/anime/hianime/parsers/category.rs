@@ -40,7 +40,7 @@ impl Scraper {
             "#main-sidebar .block_area.block_area_sidebar.block_area-genres .sb-genre-list li",
         )
         .unwrap();
-        let most_viewed_selector =
+        let top10_animes_selector =
             &Selector::parse("#main-sidebar .block_area-realtime [id^=\"top-viewed-\"]").unwrap();
 
         let url = format!(
@@ -61,8 +61,7 @@ impl Scraper {
         res.total_pages = HiAnimeUtils::get_total_pages(&document);
         res.has_next_page = HiAnimeUtils::has_next_page(&document);
         res.animes = HiAnimeUtils::extract_animes(&document, anime_selector);
-        res.top10_animes = HiAnimeUtils::extract_top10_animes(&document, most_viewed_selector);
-        res.top10_animes = HiAnimeUtils::extract_top10_animes(&document, most_viewed_selector);
+        res.top10_animes = HiAnimeUtils::extract_top10_animes(&document, top10_animes_selector);
         HiAnimeUtils::extract_genres(&document, genre_selector, &mut res.genres);
 
         Ok(res)
@@ -84,7 +83,18 @@ mod test {
 
         match hianime.get_category_anime(category, page_number).await {
             // Ok(_) => (),
-            Ok(data) => println!("{}", to_string_pretty(&data).unwrap()),
+            Ok(data) => {
+                println!("{}", to_string_pretty(&data).unwrap());
+
+                assert_eq!(data.total_pages, 187);
+                assert_eq!(data.has_next_page, true);
+
+                assert_ne!(data.animes.len(), 0);
+                assert_ne!(data.genres.len(), 0);
+                assert_ne!(data.top10_animes.today.len(), 0);
+                assert_ne!(data.top10_animes.week.len(), 0);
+                assert_ne!(data.top10_animes.month.len(), 0);
+            }
             Err(e) => eprintln!("error {}", e),
         }
     }

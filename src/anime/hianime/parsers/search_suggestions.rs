@@ -116,7 +116,11 @@ mod test {
 
         match hianime.get_search_suggestions(query).await {
             // Ok(_) => (),
-            Ok(data) => println!("{}", to_string_pretty(&data).unwrap()),
+            Ok(data) => {
+                println!("{}", to_string_pretty(&data).unwrap());
+
+                assert_ne!(data.suggestions.len(), 0);
+            }
             Err(e) => eprintln!("error {}", e),
         }
     }
