@@ -7,7 +7,9 @@ use reqwest::{
 mod types;
 pub use types::*;
 
+mod az_list;
 mod home_page;
+mod qtip;
 mod search_suggestions;
 
 #[derive(Debug)]
