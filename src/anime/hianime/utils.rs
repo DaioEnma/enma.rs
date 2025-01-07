@@ -1,8 +1,11 @@
 #![allow(dead_code)] // TODO: remove this
 
-use super::types::{
-    Anime, Episodes, MostPopularAnime, SpotlightAnime, Top10Anime, Top10AnimePeriod,
-    Top10AnimesWithPeriod, TrendingAnime,
+use super::{
+    types::{
+        Anime, Episodes, MostPopularAnime, SpotlightAnime, Top10Anime, Top10AnimePeriod,
+        Top10AnimesWithPeriod, TrendingAnime,
+    },
+    SEARCH_PAGE_FILTERS,
 };
 use scraper::{Html, Selector};
 
@@ -12,6 +15,8 @@ pub enum HiAnimeUtils {
     AjaxUrl,
     SearchUrl,
     SearchSuggestionUrl,
+    AZListUrl,
+    QtipUrl,
 }
 
 impl HiAnimeUtils {
@@ -22,6 +27,8 @@ impl HiAnimeUtils {
             HiAnimeUtils::AjaxUrl => "https://hianime.to/ajax",
             HiAnimeUtils::SearchUrl => "https://hianime.to/search",
             HiAnimeUtils::SearchSuggestionUrl => "https://hianime.to/ajax/search/suggest",
+            HiAnimeUtils::AZListUrl => "https://hianime.to/az-list",
+            HiAnimeUtils::QtipUrl => "https://hianime.to/ajax/movie/qtip",
         }
     }
 
@@ -441,5 +448,77 @@ impl HiAnimeUtils {
         }
 
         return anime;
+    }
+
+    pub fn has_next_page(document: &Html) -> bool {
+        let pagination_selector = &Selector::parse(".pagination > li").unwrap();
+        let active_selector = &Selector::parse(".pagination li.active").unwrap();
+
+        if document.select(pagination_selector).count() == 0 {
+            return false;
+        }
+        if document.select(active_selector).count() == 0 {
+            return false;
+        }
+
+        if let Some(last_li) = document.select(pagination_selector).last() {
+            return !last_li.value().classes().any(|class| class == "active");
+        }
+        false
+    }
+
+    pub fn get_total_pages(document: &Html) -> u16 {
+        let pagination_last_selector =
+            Selector::parse(r#".pagination > .page-item a[title="Last"]"#).unwrap();
+        let pagination_next_selector =
+            Selector::parse(r#".pagination > .page-item a[title="Next"]"#).unwrap();
+        let pagination_active_selector =
+            Selector::parse(".pagination > .page-item.active a").unwrap();
+
+        let last_page = document
+            .select(&pagination_last_selector)
+            .filter_map(|el| el.value().attr("href"))
+            .flat_map(|href| href.split('=').last())
+            .next();
+
+        let next_page = document
+            .select(&pagination_next_selector)
+            .filter_map(|el| el.value().attr("href"))
+            .flat_map(|href| href.split('=').last())
+            .next();
+
+        let active_page = document
+            .select(&pagination_active_selector)
+            .flat_map(|el| el.text().collect::<Vec<_>>())
+            .next()
+            .map(|s| s.parse::<u16>().ok())
+            .flatten();
+
+        let total_pages = last_page
+            .or(next_page)
+            .and_then(|page| page.parse::<u16>().ok())
+            .or(active_page)
+            .unwrap_or(1);
+
+        total_pages
+    }
+
+    pub fn get_genres_filter_value(genre_names: Vec<String>) -> Option<String> {
+        if genre_names.is_empty() {
+            return None;
+        };
+
+        let value = genre_names
+            .iter()
+            .filter_map(|name| {
+                SEARCH_PAGE_FILTERS
+                    .genres_id_map
+                    .get(name.as_str())
+                    .map(|s| s.to_string())
+            })
+            .collect::<Vec<String>>()
+            .join(",");
+
+        Some(value)
     }
 }
