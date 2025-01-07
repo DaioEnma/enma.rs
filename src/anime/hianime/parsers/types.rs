@@ -40,8 +40,8 @@ pub struct ScrapedQtipInfo {
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ScrapedCategoryAnime {
-    pub animes: Vec<Anime>,
     pub category: String,
+    pub animes: Vec<Anime>,
     pub total_pages: u16,
     pub current_page: u16,
     pub has_next_page: bool,
@@ -51,11 +51,11 @@ pub struct ScrapedCategoryAnime {
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ScrapedProducerAnime {
+    pub producer: String,
     pub animes: Vec<Anime>,
-    pub category: String,
     pub total_pages: u16,
     pub current_page: u16,
     pub has_next_page: bool,
-    pub genres: Vec<String>,
+    pub top_airing_animes: Vec<TopAiringAnime>,
     pub top10_animes: Top10AnimesWithPeriod,
 }
