@@ -12,13 +12,13 @@ use scraper::{Html, Selector};
 impl Scraper {
     pub async fn get_category_anime(
         &self,
-        category: &'static str,
+        category_name: &'static str,
         page_number: Option<u16>,
     ) -> EnmaResult<ScrapedCategoryAnime> {
         const PROVIDER_PARSER: &'static str = "hianime:get_category_anime";
 
-        let category = category.trim();
-        if !ANIME_CATEGORIES.contains(category) {
+        let category_name = category_name.trim();
+        if !ANIME_CATEGORIES.contains(category_name) {
             return Err(EnmaError::misc_error(
                 PROVIDER_PARSER,
                 Some(String::from("invalid anime category")),
@@ -44,7 +44,7 @@ impl Scraper {
             &Selector::parse("#main-sidebar .block_area-realtime [id^=\"top-viewed-\"]").unwrap();
 
         let url = format!(
-            "{}/{category}?page={}",
+            "{}/{category_name}?page={}",
             HiAnimeUtils::BaseUrl.value(),
             &res.current_page
         );
@@ -57,7 +57,7 @@ impl Scraper {
             .next()
             .and_then(|e| e.text().next())
             .map(|s| s.to_string())
-            .unwrap_or(category.to_string());
+            .unwrap_or(category_name.to_string());
         res.total_pages = HiAnimeUtils::get_total_pages(&document);
         res.has_next_page = HiAnimeUtils::has_next_page(&document);
         res.animes = HiAnimeUtils::extract_animes(&document, anime_selector);
