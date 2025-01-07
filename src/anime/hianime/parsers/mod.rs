@@ -9,6 +9,7 @@ pub use types::*;
 
 mod az_list;
 mod category;
+mod genre;
 mod home_page;
 mod producer;
 mod qtip;
