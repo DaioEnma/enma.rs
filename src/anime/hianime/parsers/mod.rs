@@ -10,6 +10,7 @@ pub use types::*;
 mod az_list;
 mod category;
 mod home_page;
+mod producer;
 mod qtip;
 mod search_suggestions;
 
