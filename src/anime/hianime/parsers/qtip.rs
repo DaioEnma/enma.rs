@@ -1,9 +1,5 @@
 use crate::{
-    anime::hianime::{
-        types::{Episodes, QtipAnime},
-        utils::HiAnimeUtils,
-        ScrapedQtipInfo, Scraper,
-    },
+    anime::hianime::{types::Episodes, utils::HiAnimeUtils, ScrapedQtipInfo, Scraper},
     utils::{EnmaClient, EnmaUtils},
     EnmaError, EnmaResult,
 };
@@ -61,6 +57,8 @@ impl Scraper {
         let sub_other_info_selector = &Selector::parse(".stick").unwrap();
         let genres_selector = &Selector::parse(".stick-text").unwrap();
 
+        let mut res = ScrapedQtipInfo::default();
+
         let id = document
             .select(id_selector)
             .next()
@@ -110,12 +108,6 @@ impl Scraper {
             .and_then(|el| el.text().next())
             .and_then(|s| s.trim().parse::<u16>().ok());
 
-        let mut jname = None;
-        let mut synonyms = None;
-        let mut aired = None;
-        let mut status = None;
-        let mut genres = vec![];
-
         for el in document.select(other_info_selector) {
             let key = el
                 .select(sub_other_info_selector)
@@ -137,12 +129,12 @@ impl Scraper {
             };
 
             match key.as_str() {
-                "japanese" => jname = Some(value),
-                "synonyms" => synonyms = Some(value),
-                "aired" => aired = Some(value),
-                "status" => status = Some(value),
+                "japanese" => res.anime.jname = Some(value),
+                "synonyms" => res.anime.synonyms = Some(value),
+                "aired" => res.anime.aired = Some(value),
+                "status" => res.anime.status = Some(value),
                 "genres" => {
-                    genres = value
+                    res.anime.genres = value
                         .split(",") // from here
                         .map(|s| s.trim())
                         .map(|s| s.to_string())
@@ -152,22 +144,14 @@ impl Scraper {
             }
         }
 
-        let res = ScrapedQtipInfo {
-            anime: QtipAnime {
-                id,
-                name,
-                description,
-                mal_score,
-                anime_type,
-                quality,
-                aired,
-                genres,
-                jname,
-                status,
-                synonyms,
-                episodes: Episodes { sub, dub },
-            },
-        };
+        res.anime.id = id;
+        res.anime.name = name;
+        res.anime.description = description;
+        res.anime.mal_score = mal_score;
+        res.anime.anime_type = anime_type;
+        res.anime.quality = quality;
+        res.anime.episodes = Episodes { sub, dub };
+
         Ok(res)
     }
 }
