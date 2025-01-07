@@ -1,7 +1,7 @@
 use crate::anime::hianime::types::{
-    AnimeSearchSuggestion, LatestCompletedAnime, LatestEpisodeAnime, MostFavoriteAnime,
-    MostPopularAnime, SpotlightAnime, Top10AnimesWithPeriod, TopAiringAnime, TopUpcomingAnime,
-    TrendingAnime,
+    Anime, AnimeSearchSuggestion, LatestCompletedAnime, LatestEpisodeAnime, MostFavoriteAnime,
+    MostPopularAnime, QtipAnime, SpotlightAnime, Top10AnimesWithPeriod, TopAiringAnime,
+    TopUpcomingAnime, TrendingAnime,
 };
 use serde::{Deserialize, Serialize};
 
@@ -22,4 +22,18 @@ pub struct ScrapedHomePage {
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ScrapedSearchSuggestion {
     pub suggestions: Vec<AnimeSearchSuggestion>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct ScrapedAZList {
+    pub animes: Vec<Anime>,
+    pub sort_option: &'static str,
+    pub total_pages: u16,
+    pub current_page: u16,
+    pub has_next_page: bool,
+}
+
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct ScrapedQtipInfo {
+    pub anime: QtipAnime,
 }
