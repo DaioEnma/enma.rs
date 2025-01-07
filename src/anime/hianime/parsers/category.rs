@@ -52,7 +52,7 @@ impl Scraper {
         let page = self.client.get_html(url, None, PROVIDER_PARSER).await?;
         let document = Html::parse_document(&page);
 
-        res.category = document
+        res.category_name = document
             .select(category_name_selector)
             .next()
             .and_then(|e| e.text().next())

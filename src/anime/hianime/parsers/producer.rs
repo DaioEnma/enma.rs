@@ -48,7 +48,7 @@ impl Scraper {
         let page = self.client.get_html(url, None, PROVIDER_PARSER).await?;
         let document = Html::parse_document(&page);
 
-        res.producer = document
+        res.producer_name = document
             .select(producer_name_selector)
             .next()
             .and_then(|e| e.text().next())
