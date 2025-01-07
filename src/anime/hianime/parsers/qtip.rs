@@ -163,7 +163,7 @@ mod test {
 
     // cargo test --lib -- anime::hianime::parsers::qtip::test --show-output
     #[tokio::test]
-    async fn test_get_az_list() {
+    async fn test_get_qtip_info() {
         let hianime = hianime::Scraper::new();
         let anime_id = "attack-on-titan-112";
 
