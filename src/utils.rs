@@ -67,9 +67,9 @@ impl EnmaUtils {
         let encoded_str = encode(raw_string.trim()).into_owned();
 
         if encoded_str.is_empty() {
-            return Err(EnmaError::unknown_error(
+            return Err(EnmaError::parsing_error(
                 provider_parser,
-                Some("ParsingError: encoded string is empty"),
+                Some(String::from("encoded string is empty")),
                 Some(StatusCode::BAD_REQUEST),
             ));
         }
@@ -83,18 +83,18 @@ impl EnmaUtils {
     ) -> EnmaResult<String> {
         let decoded_str = decode(raw_string.trim())
             .map_err(|_| {
-                EnmaError::unknown_error(
+                EnmaError::parsing_error(
                     provider_parser,
-                    Some("ParsingError: failed to parse raw string"),
+                    Some(String::from("failed to parse raw string")),
                     Some(StatusCode::BAD_REQUEST),
                 )
             })?
             .into_owned();
 
         if decoded_str.is_empty() {
-            return Err(EnmaError::unknown_error(
+            return Err(EnmaError::parsing_error(
                 provider_parser,
-                Some("ParsingError: decoded string is empty"),
+                Some(String::from("decoded string is empty")),
                 Some(StatusCode::BAD_REQUEST),
             ));
         }
