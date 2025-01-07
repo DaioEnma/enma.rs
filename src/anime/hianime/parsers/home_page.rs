@@ -58,18 +58,13 @@ impl Scraper {
 
         res.spotlight_animes =
             HiAnimeUtils::extract_spotlight_animes(&document, spotlight_selector);
-
         res.trending_animes = HiAnimeUtils::extract_trending_anime(&document, trending_selector);
         res.latest_episode_animes =
             HiAnimeUtils::extract_animes(&document, latest_episode_selector);
         res.top_upcoming_animes = HiAnimeUtils::extract_animes(&document, top_upcoming_selector);
 
         // genres
-        for el in document.select(genre_selector) {
-            if let Some(genre) = el.text().next().map(|s| s.to_string()) {
-                res.genres.push(genre);
-            }
-        }
+        HiAnimeUtils::extract_genres(&document, genre_selector, &mut res.genres);
 
         res.top10_animes = HiAnimeUtils::extract_top10_animes(&document, most_viewed_selector);
 
