@@ -450,6 +450,18 @@ impl HiAnimeUtils {
         return anime;
     }
 
+    pub fn extract_genres(
+        document: &Html,
+        genre_selector: &Selector,
+        genre_names: &mut Vec<String>,
+    ) {
+        for el in document.select(genre_selector) {
+            if let Some(genre) = el.text().next().map(|s| s.to_string()) {
+                genre_names.push(genre);
+            }
+        }
+    }
+
     pub fn has_next_page(document: &Html) -> bool {
         let pagination_selector = &Selector::parse(".pagination > li").unwrap();
         let active_selector = &Selector::parse(".pagination li.active").unwrap();
