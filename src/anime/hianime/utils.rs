@@ -18,6 +18,7 @@ pub enum HiAnimeUtils {
     AZListUrl,
     QtipUrl,
     ProducerUrl,
+    GenreUrl,
 }
 
 impl HiAnimeUtils {
@@ -31,6 +32,7 @@ impl HiAnimeUtils {
             HiAnimeUtils::AZListUrl => "https://hianime.to/az-list",
             HiAnimeUtils::QtipUrl => "https://hianime.to/ajax/movie/qtip",
             HiAnimeUtils::ProducerUrl => "https://hianime.to/producer",
+            HiAnimeUtils::GenreUrl => "https://hianime.to/genre",
         }
     }
 
