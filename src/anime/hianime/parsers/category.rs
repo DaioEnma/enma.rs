@@ -1,6 +1,6 @@
 use crate::{
     anime::hianime::{
-        parsers::types::ScrapedCategory, types::ANIME_CATEGORIES, utils::HiAnimeUtils, Scraper,
+        parsers::types::ScrapedAnimeCategory, types::ANIME_CATEGORIES, utils::HiAnimeUtils, Scraper,
     },
     error::EnmaResult,
     utils::EnmaClient,
@@ -14,7 +14,7 @@ impl Scraper {
         &self,
         category: &'static str,
         page_number: Option<u16>,
-    ) -> EnmaResult<ScrapedCategory> {
+    ) -> EnmaResult<ScrapedAnimeCategory> {
         const PROVIDER_PARSER: &'static str = "hianime:get_category_anime";
 
         let category = category.trim();
@@ -26,7 +26,7 @@ impl Scraper {
             ));
         }
 
-        let mut res = ScrapedCategory {
+        let mut res = ScrapedAnimeCategory {
             current_page: page_number.unwrap_or(1).max(1),
             genres: Vec::with_capacity(41),
             ..Default::default()
