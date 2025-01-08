@@ -87,25 +87,15 @@ impl Scraper {
                     .and_then(|el| el.text().next())
                     .map(|s| s.to_lowercase().trim().to_string());
 
+                let episode_info = EpisodeInfo {
+                    server_id,
+                    server_name,
+                };
+
                 match server {
-                    "sub" => {
-                        res.sub.push(EpisodeInfo {
-                            server_id,
-                            server_name,
-                        });
-                    }
-                    "dub" => {
-                        res.dub.push(EpisodeInfo {
-                            server_id,
-                            server_name,
-                        });
-                    }
-                    "raw" => {
-                        res.raw.push(EpisodeInfo {
-                            server_id,
-                            server_name,
-                        });
-                    }
+                    "sub" => res.sub.push(episode_info),
+                    "dub" => res.dub.push(episode_info),
+                    "raw" => res.raw.push(episode_info),
                     _ => (),
                 }
             }
