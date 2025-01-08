@@ -93,7 +93,7 @@ mod test {
 
     // cargo test --lib -- anime::hianime::parsers::episodes::test --show-output
     #[tokio::test]
-    async fn test_get_qtip_info() {
+    async fn test_get_anime_episodes() {
         let hianime = hianime::Scraper::new();
         let anime_id = "steinsgate-3";
 

@@ -110,7 +110,7 @@ mod test {
 
     // cargo test --lib -- anime::hianime::parsers::search_suggestions::test --show-output
     #[tokio::test]
-    async fn test_search_suggestions() {
+    async fn test_get_search_suggestions() {
         let hianime = hianime::Scraper::new();
         let query = "monster";
 

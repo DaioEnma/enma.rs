@@ -72,7 +72,7 @@ mod test {
 
     // cargo test --lib -- anime::hianime::parsers::producer::test --show-output
     #[tokio::test]
-    async fn test_get_category_anime() {
+    async fn test_get_producer_animee() {
         let hianime = hianime::Scraper::new();
 
         let producer = "toei-animation";

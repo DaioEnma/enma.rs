@@ -129,7 +129,7 @@ mod test {
 
     // cargo test --lib -- anime::hianime::parsers::episode_servers::test --show-output
     #[tokio::test]
-    async fn test_episode_servers() {
+    async fn test_get_episode_servers() {
         let hianime = hianime::Scraper::new();
         let anime_episode_id = "steinsgate-0-92?ep=2055";
 
