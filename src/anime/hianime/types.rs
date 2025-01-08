@@ -176,7 +176,7 @@ pub struct AnimeSearchSuggestion {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AnimeEpisode {
     pub title: Option<String>,
-    pub number: Option<i32>,
+    pub number: Option<u16>,
     pub episode_id: Option<String>,
     pub is_filler: bool,
 }
@@ -184,7 +184,7 @@ pub struct AnimeEpisode {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct EpisodeInfo {
     pub server_name: Option<String>,
-    pub server_id: Option<String>,
+    pub server_id: Option<u16>,
 }
 
 pub type SubEpisode = EpisodeInfo;
