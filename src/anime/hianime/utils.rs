@@ -21,6 +21,7 @@ pub enum HiAnimeUtils {
     GenreUrl,
     EpisodeListUrl,
     EpisodeServersUrl,
+    ScheduleUrl,
 }
 
 impl HiAnimeUtils {
@@ -37,6 +38,7 @@ impl HiAnimeUtils {
             HiAnimeUtils::GenreUrl => "https://hianime.to/genre",
             HiAnimeUtils::EpisodeListUrl => "https://hianime.to/ajax/v2/episode/list",
             HiAnimeUtils::EpisodeServersUrl => "https://hianime.to/ajax/v2/episode/servers",
+            HiAnimeUtils::ScheduleUrl => "https://hianime.to/ajax/schedule/list",
         }
     }
 
