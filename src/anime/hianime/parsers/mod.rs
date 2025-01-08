@@ -15,6 +15,7 @@ mod genre;
 mod home_page;
 mod producer;
 mod qtip;
+mod schedule;
 mod search_suggestions;
 
 #[derive(Debug)]
