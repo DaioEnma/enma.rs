@@ -236,6 +236,18 @@ pub struct QtipAnime {
     pub genres: Vec<String>,
 }
 
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct ScheduledAnime {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub jname: Option<String>,
+    pub time: Option<String>,
+    pub episode_number: Option<u16>,
+    pub airing_timestamp: i64,
+    pub already_aired: bool,
+    pub seconds_until_airing: i32,
+}
+
 // #[derive(Debug, Serialize, Deserialize)]
 pub enum Server {
     VidStreaming,
