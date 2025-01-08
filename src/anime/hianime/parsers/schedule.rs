@@ -16,17 +16,13 @@ struct RawData {
     html: Option<String>,
 }
 
-fn get_formatted_date(y: u16, m: u8, d: u8) -> String {
-    format!("{}-{:02}-{:02}", y, m, d)
-}
-
 impl Scraper {
     pub async fn get_schedule(&self, year: u16, month: u8, day: u8) -> EnmaResult<ScrapedSchedule> {
         const PROVIDER_PARSER: &'static str = "hianime:get_schedule";
         const NO_DATA_INDICATOR: &'static str = "No data to display";
 
         let mut res = ScrapedSchedule::default();
-        let formatted_date = get_formatted_date(year, month, day);
+        let formatted_date = format!("{}-{:02}-{:02}", year, month, day);
 
         let url = format!(
             "{}?tzOffset=-330&date={}",
