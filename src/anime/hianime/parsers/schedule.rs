@@ -122,11 +122,7 @@ impl Scraper {
                 airing_timestamp,
                 seconds_until_airing,
                 time: Some(airing_time),
-                already_aired: if seconds_until_airing <= 0 {
-                    true
-                } else {
-                    false
-                },
+                already_aired: seconds_until_airing <= 0,
             });
         }
 
