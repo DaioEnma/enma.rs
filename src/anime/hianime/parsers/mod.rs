@@ -13,6 +13,7 @@ mod episode_servers;
 mod episodes;
 mod genre;
 mod home_page;
+mod info;
 mod producer;
 mod qtip;
 mod schedule;
