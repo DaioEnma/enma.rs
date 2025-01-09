@@ -1,8 +1,8 @@
 use crate::anime::hianime::types::{
-    Anime, AnimeEpisode, AnimeSearchSuggestion, DubEpisode, LatestCompletedAnime,
-    LatestEpisodeAnime, MostFavoriteAnime, MostPopularAnime, QtipAnime, RawEpisode, ScheduledAnime,
-    SpotlightAnime, SubEpisode, Top10AnimesWithPeriod, TopAiringAnime, TopUpcomingAnime,
-    TrendingAnime,
+    Anime, AnimeDetailedInfo, AnimeEpisode, AnimeSearchSuggestion, DubEpisode,
+    LatestCompletedAnime, LatestEpisodeAnime, MostFavoriteAnime, MostPopularAnime, QtipAnime,
+    RawEpisode, RecommendedAnime, RelatedAnime, ScheduledAnime, SpotlightAnime, SubEpisode,
+    Top10AnimesWithPeriod, TopAiringAnime, TopUpcomingAnime, TrendingAnime,
 };
 use serde::{Deserialize, Serialize};
 
@@ -90,4 +90,12 @@ pub struct ScrapedEpisodeServers {
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ScrapedSchedule {
     pub animes: Vec<ScheduledAnime>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct ScrapedAnimeInfo {
+    pub anime: AnimeDetailedInfo,
+    pub related_animes: Vec<RelatedAnime>,
+    pub recommended_animes: Vec<RecommendedAnime>,
+    pub most_popular_animes: Vec<MostPopularAnime>,
 }
