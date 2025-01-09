@@ -1,7 +1,8 @@
 //!  <img
 //!    src="https://raw.githubusercontent.com/ghoshRitesh12/aniwatch-api/refs/heads/main/public/img/hianime_v2.png"
 //!    alt="logo"
-//!    width="150"
+//!    width="200vw"
+//!    align="right"
 //!  />
 //!
 //!  # enma.rs
