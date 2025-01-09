@@ -8,6 +8,7 @@ use super::{
     SEARCH_PAGE_FILTERS,
 };
 use scraper::{Html, Selector};
+use serde_json::Value;
 
 pub enum HiAnimeUtils {
     BaseUrl,
@@ -470,6 +471,28 @@ impl HiAnimeUtils {
                 genre_names.push(genre);
             }
         }
+    }
+
+    /// 0th -> mal_id, 1st -> anilist_id
+    pub fn get_mal_anilist_id(document: &Html) -> (Option<u32>, Option<u32>) {
+        let mut ids = (None, None);
+        let selector = &Selector::parse("body #syncData").unwrap();
+
+        if let Some(el) = document.select(selector).next() {
+            let json_str = el.text().next().unwrap_or_default();
+            let parsed_json: Value = serde_json::from_str(json_str).unwrap_or_default();
+
+            ids.0 = parsed_json["mal_id"]
+                .as_str()
+                .map(|s| s.parse::<u32>().ok())
+                .flatten();
+            ids.1 = parsed_json["anilist_id"]
+                .as_str()
+                .map(|s| s.parse::<u32>().ok())
+                .flatten();
+        }
+
+        return ids;
     }
 
     pub fn has_next_page(document: &Html) -> bool {
