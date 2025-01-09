@@ -6,7 +6,7 @@
 //!
 //!  # enma.rs
 //!
-//!  A Rust crate serving anime and manga information 📦
+//!  A crate serving anime and manga information 📦
 //!
 //!  > enma.rs is basically a rust port and a super set of the
 //!  > [aniwatch scraper package](https://github.com/ghoshRitesh12/aniwatch),
