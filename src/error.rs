@@ -53,10 +53,10 @@ impl ErrorDetails {
     }
 }
 
-/// Result<T, [EnmaError]>
+/// Custom Result<T, [EnmaError]> for generic success results across providers
 pub type EnmaResult<T> = std::result::Result<T, EnmaError>;
 
-/// Custom error to handle different types of errors
+/// Custom error to generalize different types of errors
 #[derive(Debug, ThisError)]
 pub enum EnmaError {
     /// represents raw source data fetch error
