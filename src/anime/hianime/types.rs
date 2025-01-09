@@ -1,7 +1,5 @@
-#![allow(dead_code)]
-
 use once_cell::sync::Lazy;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 use serde::{Deserialize, Serialize};
 
@@ -57,14 +55,6 @@ impl Top10AnimePeriod {
             _ => Self::Day,
         }
     }
-
-    pub fn to_str(&self) -> &'static str {
-        match self {
-            Self::Day => "day",
-            Self::Week => "week",
-            Self::Month => "month",
-        }
-    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -110,7 +100,7 @@ pub type TopAiringAnime = MostPopularAnime;
 pub type MostFavoriteAnime = MostPopularAnime;
 pub type LatestCompletedAnime = MostPopularAnime;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct Season {
     pub id: Option<String>,
     pub name: Option<String>,
@@ -119,22 +109,32 @@ pub struct Season {
     pub is_current: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct AnimeGeneralInfo {
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(untagged)] // Serialize without including a tag in JSON
+pub enum OtherInfoValue {
+    Single(String),
+    Multiple(Vec<String>),
+}
+
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct AnimeDetailedInfo {
     pub id: Option<String>,
     pub name: Option<String>,
+    pub jname: Option<String>,
     pub poster: Option<String>,
     pub description: Option<String>,
-    pub anilist_id: Option<u32>,
-    pub mal_id: Option<u32>,
+    pub anilist_id: Option<u32>, // skeptical about it being u64
+    pub mal_id: Option<u32>,     // skeptical about it being u64
 
-    pub stats: AnimeGeneralStats,
+    pub seasons: Vec<Season>,
+    pub other_info: HashMap<String, OtherInfoValue>,
+    pub stats: AnimeDetailedStats,
     pub promotional_videos: Vec<AnimePromotionalVideo>,
     pub characters_voice_actors: Vec<AnimeCharactersVoiceActors>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct AnimeGeneralStats {
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct AnimeDetailedStats {
     pub quality: Option<String>,
     pub duration: Option<String>,
     pub rating: Option<String>,
@@ -150,13 +150,13 @@ pub struct AnimePromotionalVideo {
     pub thumbnail: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct AnimeCharactersVoiceActors {
     pub character: AnimeCharacter,
     pub voice_actor: AnimeCharacter,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct AnimeCharacter {
     pub id: Option<String>,
     pub name: Option<String>,
@@ -212,6 +212,7 @@ pub static ANIME_CATEGORIES: Lazy<HashSet<&'static str>> = Lazy::new(|| {
     .collect();
 });
 
+#[allow(dead_code)] // TODO -> remove this
 pub static ANIME_SERVERS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
     return ["hd-1", "hd-2", "megacloud", "streamsb", "streamtape"]
         .into_iter()
@@ -249,6 +250,7 @@ pub struct ScheduledAnime {
 }
 
 // #[derive(Debug, Serialize, Deserialize)]
+#[allow(dead_code)] // TODO -> remove this
 pub enum Server {
     VidStreaming,
     MegaCloud,
@@ -264,6 +266,7 @@ pub enum Server {
     FileMoon,
 }
 
+#[allow(dead_code)] // TODO -> remove this
 impl Server {
     pub fn value(&self) -> &'static str {
         match self {
