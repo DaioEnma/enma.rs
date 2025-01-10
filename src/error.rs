@@ -53,7 +53,7 @@ impl ErrorDetails {
     }
 }
 
-/// Custom Result<T, [EnmaError]> for generic success results across providers
+/// Custom Result<`T`, [`EnmaError`]> for generic success result across providers
 pub type EnmaResult<T> = std::result::Result<T, EnmaError>;
 
 /// Custom error to generalize different types of errors

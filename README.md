@@ -1,15 +1,15 @@
 <img
   src="https://raw.githubusercontent.com/ghoshRitesh12/aniwatch-api/refs/heads/main/public/img/hianime_v2.png"
   alt="logo"
-  width="200vw"
-  align="right"
+  width="175"
+  align="left"
 />
 
 # enma.rs
 
 A crate serving anime and manga information 📦
 
-> enma.rs is basically a rust port and a super set of the [aniwatch scraper package](https://github.com/ghoshRitesh12/anwatch), which is internally used by the [aniwatch-api](https://github.com/ghoshRitesh12/aniwatch-api).
+> enma.rs is basically a rust port and a super set of the [aniwatch scraper package](https://github.com/ghoshRitesh12/aniwatch), which is internally used by the [aniwatch-api](https://github.com/ghoshRitesh12/aniwatch-api).
 > <br/>
 
 > [!IMPORTANT]
@@ -22,26 +22,6 @@ A crate serving anime and manga information 📦
 - [Quick Start](#quick-start)
   - [Installation](#installation)
   - [Example Usage](#example-usage)
-    <!-- - [Documentation](#documentation) -->
-      <!-- - [getHomePage](#gethomepage)
-  - [getAZList](#getazlist)
-  - [getQtipInfo](#getqtipinfo)
-  - [getAnimeAboutInfo](#getanimeaboutinfo)
-  - [getAnimeSearchResults](#getanimesearchresults)
-  - [getAnimeSearchSuggestion](#getanimesearchsuggestion)
-  - [getProducerAnimes](#getproduceranimes)
-  - [getGenreAnime](#getgenreanime)
-  - [getAnimeCategory](#getanimecategory)
-  - [getEstimatedSchedule](#getestimatedschedule)
-  - [getAnimeEpisodes](#getanimeepisodes)
-  - [getEpisodeServers](#getepisodeservers)
-  - [getAnimeEpisodeSources](#getanimeepisodesources) -->
-    <!-- - [Development](#development) -->
-    <!-- - [Thanks](#thanks) -->
-    <!-- - [Support](#support) -->
-    <!-- - [License](#license) -->
-    <!-- - [Contributors](#contributors) -->
-    <!-- - [Star History](#star-history) -->
 
 ## Quick start
 
