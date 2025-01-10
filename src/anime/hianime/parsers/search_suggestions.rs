@@ -17,6 +17,35 @@ struct RawData {
 }
 
 impl Scraper {
+    /// ### Example Usage
+    /// ```rust
+    /// async fn get_data() {
+    ///     use enma::anime::hianime;
+    ///     let hianime = hianime::Scraper::new();
+    ///
+    ///     let query = "monster";
+    ///
+    ///     match hianime.get_search_suggestions(query).await {
+    ///         Ok(data) => println!("{data:#?}"),
+    ///         Err(e) => eprintln!("error: {e}"),
+    ///     }
+    /// }
+    ///  ```
+    /// ### Response Schema
+    /// ```javascript
+    /// {
+    ///   suggestions: [
+    ///     {
+    ///       id: string,
+    ///       name: string,
+    ///       poster: string,
+    ///       jname: string,
+    ///       other_info: string[]
+    ///     },
+    ///     {...}
+    ///   ]
+    /// }
+    /// ```
     pub async fn get_search_suggestions(&self, query: &str) -> EnmaResult<ScrapedSearchSuggestion> {
         const PROVIDER_PARSER: &'static str = "hianime:get_search_suggestions";
         let mut res = ScrapedSearchSuggestion::default();

@@ -38,9 +38,8 @@ cargo add enma
 Example - getting information about an anime category by providing the name of the category and page number(optional); using anime category `most-favorite` with page number `2` as an example.
 
 ```rust
-use enma::anime::hianime;
-
 async fn get_data() {
+    use enma::anime::hianime;
     let hianime = hianime::Scraper::new();
 
     let category = "most-favorite";

@@ -8,6 +8,21 @@ use reqwest::StatusCode;
 use scraper::{Html, Selector};
 
 impl Scraper {
+    /// ### Example Usage
+    /// ```rust
+    /// async fn get_data() {
+    ///     use enma::anime::hianime;
+    ///     let hianime = hianime::Scraper::new();
+    ///
+    ///     let producer_name = "toei-animation";
+    ///     let page_number = Some(2);
+    ///
+    ///     match hianime.get_producer_anime(producer_name, page_number).await {
+    ///         Ok(data) => println!("{data:#?}"),
+    ///         Err(e) => eprintln!("error: {e}"),
+    ///     }
+    /// }
+    ///  ```
     pub async fn get_producer_anime(
         &self,
         producer_name: &'static str,

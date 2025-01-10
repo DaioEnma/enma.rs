@@ -6,6 +6,18 @@ use crate::{
 use scraper::{Html, Selector};
 
 impl Scraper {
+    /// ### Example Usage
+    /// ```rust
+    /// async fn get_data() {
+    ///     use enma::anime::hianime;
+    ///     let hianime = hianime::Scraper::new();
+    ///
+    ///     match hianime.get_home_page().await {
+    ///         Ok(data) => println!("{data:#?}"),
+    ///         Err(e) => eprintln!("error: {e}"),
+    ///     }
+    /// }
+    ///  ```
     pub async fn get_home_page(&self) -> EnmaResult<ScrapedHomePage> {
         const PROVIDER_PARSER: &'static str = "hianime:get_home_page";
         let mut res = ScrapedHomePage {

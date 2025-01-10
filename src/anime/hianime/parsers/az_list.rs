@@ -7,6 +7,21 @@ use reqwest::StatusCode;
 use scraper::{Html, Selector};
 
 impl Scraper {
+    /// ### Example Usage
+    /// ```rust
+    /// async fn get_data() {
+    ///     use enma::anime::hianime;
+    ///     let hianime = hianime::Scraper::new();
+    ///
+    ///     let sort_option = "e";
+    ///     let page_number = Some(2);
+    ///
+    ///     match hianime.get_az_list(sort_option, page_number).await {
+    ///         Ok(data) => println!("{data:#?}"),
+    ///         Err(e) => eprintln!("error: {e}"),
+    ///     }
+    /// }
+    ///  ```
     pub async fn get_az_list(
         &self,
         sort_option: &'static str,

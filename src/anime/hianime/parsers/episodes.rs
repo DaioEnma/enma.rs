@@ -17,6 +17,20 @@ struct RawData {
 }
 
 impl Scraper {
+    /// ### Example Usage
+    /// ```rust
+    /// async fn get_data() {
+    ///     use enma::anime::hianime;
+    ///     let hianime = hianime::Scraper::new();
+    ///
+    ///     let anime_id = "steinsgate-3";
+    ///
+    ///     match hianime.get_anime_episodes(anime_id).await {
+    ///         Ok(data) => println!("{data:#?}"),
+    ///         Err(e) => eprintln!("error: {e}"),
+    ///     }
+    /// }
+    ///  ```
     pub async fn get_anime_episodes(
         &self,
         anime_id: &'static str,

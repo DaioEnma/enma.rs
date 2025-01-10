@@ -10,6 +10,20 @@ use reqwest::{
 use scraper::{Html, Selector};
 
 impl Scraper {
+    /// ### Example Usage
+    /// ```rust
+    /// async fn get_data() {
+    ///     use enma::anime::hianime;
+    ///     let hianime = hianime::Scraper::new();
+    ///
+    ///     let anime_id = "attack-on-titan-112";
+    ///
+    ///     match hianime.get_qtip_info(anime_id).await {
+    ///         Ok(data) => println!("{data:#?}"),
+    ///         Err(e) => eprintln!("error: {e}"),
+    ///     }
+    /// }
+    ///  ```
     pub async fn get_qtip_info(&self, anime_id: &'static str) -> EnmaResult<ScrapedQtipInfo> {
         const PROVIDER_PARSER: &'static str = "hianime:get_qtip_info";
 

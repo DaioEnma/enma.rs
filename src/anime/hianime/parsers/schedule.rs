@@ -17,6 +17,20 @@ struct RawData {
 }
 
 impl Scraper {
+    /// ### Example Usage
+    /// ```rust
+    /// async fn get_data() {
+    ///     use enma::anime::hianime;
+    ///     let hianime = hianime::Scraper::new();
+    ///
+    ///     let (year, month, day) = (2025, 02, 17);
+    ///
+    ///     match hianime.get_schedule(year, month, day).await {
+    ///         Ok(data) => println!("{data:#?}"),
+    ///         Err(e) => eprintln!("error: {e}"),
+    ///     }
+    /// }
+    ///  ```
     pub async fn get_schedule(&self, year: u16, month: u8, day: u8) -> EnmaResult<ScrapedSchedule> {
         const PROVIDER_PARSER: &'static str = "hianime:get_schedule";
         const NO_DATA_INDICATOR: &'static str = "No data to display";
