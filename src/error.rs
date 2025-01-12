@@ -67,24 +67,30 @@ pub enum EnmaError {
     #[error("{ANSI_ESC_CODE_COLOR_RED}<{}>: {} {}{ANSI_ESC_CODE_COLOR_RESET}", details.provider_parser, details.status, details.message)]
     SrcParseError { details: ErrorDetails },
 
-    /// represents integer parsing error
-    #[error("{ANSI_ESC_CODE_COLOR_RED}<{}>: {} {}{ANSI_ESC_CODE_COLOR_RESET}", details.provider_parser, details.status, details.message)]
-    ParseIntError { details: ErrorDetails },
-
-    /// represents json serializing or deserializing error
-    #[error("{ANSI_ESC_CODE_COLOR_RED}<{}>: {} {}{ANSI_ESC_CODE_COLOR_RESET}", details.provider_parser, details.status, details.message)]
-    JsonSerDeError { details: ErrorDetails },
-
-    /// represents any non json parsing errors
+    /// represents any form of parsing error
     #[error("{ANSI_ESC_CODE_COLOR_RED}<{}>: {} {}{ANSI_ESC_CODE_COLOR_RESET}", details.provider_parser, details.status, details.message)]
     ParsingError { details: ErrorDetails },
 
-    /// represents miscellaneous errors
+    /// represents any form of parsing error
+    #[error("{ANSI_ESC_CODE_COLOR_RED}<{}>: {} {}{ANSI_ESC_CODE_COLOR_RESET}", details.provider_parser, details.status, details.message)]
+    InvalidDataError { details: ErrorDetails },
+
+    /// represents miscellaneous error
     #[error("{ANSI_ESC_CODE_COLOR_RED}<{}>: {} {}{ANSI_ESC_CODE_COLOR_RESET}", details.provider_parser, details.status, details.message)]
     MiscError { details: ErrorDetails },
 }
 
 impl EnmaError {
+    pub fn details(&self) -> &ErrorDetails {
+        match self {
+            EnmaError::MiscError { details } => details,
+            EnmaError::ParsingError { details } => details,
+            EnmaError::SrcFetchError { details } => details,
+            EnmaError::SrcParseError { details } => details,
+            EnmaError::InvalidDataError { details } => details,
+        }
+    }
+
     pub fn src_fetch_error(
         provider_parser: &'static str,
         err_msg: Option<String>,
@@ -116,37 +122,6 @@ impl EnmaError {
         };
     }
 
-    pub fn parse_int_error(
-        provider_parser: &'static str,
-        err_msg: Option<String>,
-        status: Option<StatusCode>,
-    ) -> Self {
-        const ERROR_PREFIX: &'static str = "ParseIntError: ";
-        let err_msg =
-            Self::get_formatted_err(err_msg, ERROR_PREFIX, "Failed to parse integer value");
-
-        return Self::ParseIntError {
-            details: ErrorDetails::new(provider_parser, err_msg, status),
-        };
-    }
-
-    pub fn json_serde_error(
-        provider_parser: &'static str,
-        err_msg: Option<String>,
-        status: Option<StatusCode>,
-    ) -> Self {
-        const ERROR_PREFIX: &'static str = "JsonSerDeError: ";
-        let err_msg = Self::get_formatted_err(
-            err_msg,
-            ERROR_PREFIX,
-            "Failed to serialize or deserialize json",
-        );
-
-        return Self::JsonSerDeError {
-            details: ErrorDetails::new(provider_parser, err_msg, status),
-        };
-    }
-
     pub fn parsing_error(
         provider_parser: &'static str,
         err_msg: Option<String>,
@@ -156,6 +131,19 @@ impl EnmaError {
         let err_msg = Self::get_formatted_err(err_msg, ERROR_PREFIX, DEFAULT_ERROR_MESSAGE);
 
         return Self::ParsingError {
+            details: ErrorDetails::new(provider_parser, err_msg, status),
+        };
+    }
+
+    pub fn invalid_data_error(
+        provider_parser: &'static str,
+        err_msg: Option<String>,
+        status: Option<StatusCode>,
+    ) -> Self {
+        const ERROR_PREFIX: &'static str = "InvalidDataError: ";
+        let err_msg = Self::get_formatted_err(err_msg, ERROR_PREFIX, DEFAULT_ERROR_MESSAGE);
+
+        return Self::MiscError {
             details: ErrorDetails::new(provider_parser, err_msg, status),
         };
     }
