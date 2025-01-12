@@ -1,8 +1,11 @@
-use crate::anime::hianime::types::{
-    Anime, AnimeDetailedInfo, AnimeEpisode, AnimeSearchSuggestion, DubEpisode,
-    LatestCompletedAnime, LatestEpisodeAnime, MostFavoriteAnime, MostPopularAnime, QtipAnime,
-    RawEpisode, RecommendedAnime, RelatedAnime, ScheduledAnime, SpotlightAnime, SubEpisode,
-    Top10AnimesWithPeriod, TopAiringAnime, TopUpcomingAnime, TrendingAnime,
+use crate::anime::hianime::{
+    types::{
+        Anime, AnimeDetailedInfo, AnimeEpisode, AnimeSearchSuggestion, DubEpisode,
+        LatestCompletedAnime, LatestEpisodeAnime, MostFavoriteAnime, MostPopularAnime, QtipAnime,
+        RawEpisode, RecommendedAnime, RelatedAnime, ScheduledAnime, SpotlightAnime, SubEpisode,
+        Top10AnimesWithPeriod, TopAiringAnime, TopUpcomingAnime, TrendingAnime,
+    },
+    SearchFilters,
 };
 use serde::{Deserialize, Serialize};
 
@@ -97,5 +100,17 @@ pub struct ScrapedAnimeInfo {
     pub anime: AnimeDetailedInfo,
     pub related_animes: Vec<RelatedAnime>,
     pub recommended_animes: Vec<RecommendedAnime>,
+    pub most_popular_animes: Vec<MostPopularAnime>,
+}
+
+#[derive(Serialize, Debug, Default)]
+pub struct ScrapedSearchResult {
+    pub search_query: &'static str,
+    pub search_filter: SearchFilters,
+    pub animes: Vec<Anime>,
+    pub total_pages: u16,
+    pub current_page: u16,
+    pub has_next_page: bool,
+
     pub most_popular_animes: Vec<MostPopularAnime>,
 }
