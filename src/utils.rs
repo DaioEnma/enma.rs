@@ -1,4 +1,4 @@
-#![allow(dead_code)] // TODO: remove this
+// #![allow(dead_code)] // TODO: remove this
 
 use crate::error::{EnmaError, EnmaResult};
 use reqwest::{
