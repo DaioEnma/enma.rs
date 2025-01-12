@@ -17,6 +17,7 @@ mod info;
 mod producer;
 mod qtip;
 mod schedule;
+mod search;
 mod search_suggestions;
 
 #[derive(Debug)]
