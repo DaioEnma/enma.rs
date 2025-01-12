@@ -32,7 +32,7 @@ impl Scraper {
 
         let genre_name = genre_name.trim();
         if genre_name.is_empty() {
-            return Err(EnmaError::misc_error(
+            return Err(EnmaError::invalid_data_error(
                 PROVIDER_PARSER,
                 Some(String::from("invalid genre name")),
                 Some(StatusCode::BAD_REQUEST),

@@ -32,7 +32,7 @@ impl Scraper {
 
         let producer_name = producer_name.trim();
         if producer_name.is_empty() {
-            return Err(EnmaError::misc_error(
+            return Err(EnmaError::invalid_data_error(
                 PROVIDER_PARSER,
                 Some(String::from("invalid producer name")),
                 Some(StatusCode::BAD_REQUEST),

@@ -31,7 +31,7 @@ impl Scraper {
 
         let sort_option = sort_option.trim();
         if !AZ_LIST_SORT_OPTIONS.contains(sort_option) {
-            return Err(EnmaError::misc_error(
+            return Err(EnmaError::invalid_data_error(
                 PROVIDER_PARSER,
                 Some(String::from("invalid az list option")),
                 Some(StatusCode::BAD_REQUEST),

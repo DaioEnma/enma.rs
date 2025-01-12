@@ -34,7 +34,7 @@ impl Scraper {
 
         let category_name = category_name.trim();
         if !ANIME_CATEGORIES.contains(category_name) {
-            return Err(EnmaError::misc_error(
+            return Err(EnmaError::invalid_data_error(
                 PROVIDER_PARSER,
                 Some(String::from("invalid anime category")),
                 Some(StatusCode::BAD_REQUEST),

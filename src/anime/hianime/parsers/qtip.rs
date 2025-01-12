@@ -31,7 +31,7 @@ impl Scraper {
         let id = anime_id.split('-').last().unwrap_or_default();
 
         if id.is_empty() {
-            return Err(EnmaError::misc_error(
+            return Err(EnmaError::invalid_data_error(
                 PROVIDER_PARSER,
                 Some(String::from("invalid anime id")),
                 Some(StatusCode::BAD_REQUEST),
