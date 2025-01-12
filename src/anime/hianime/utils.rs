@@ -1,11 +1,6 @@
-#![allow(dead_code)] // TODO: remove this
-
-use super::{
-    types::{
-        Anime, Episodes, MostPopularAnime, SpotlightAnime, Top10Anime, Top10AnimePeriod,
-        Top10AnimesWithPeriod, TrendingAnime,
-    },
-    SEARCH_PAGE_FILTERS,
+use super::types::{
+    Anime, Episodes, MostPopularAnime, SpotlightAnime, Top10Anime, Top10AnimePeriod,
+    Top10AnimesWithPeriod, TrendingAnime,
 };
 use scraper::{Html, Selector};
 use serde_json::Value;
@@ -13,6 +8,7 @@ use serde_json::Value;
 pub enum HiAnimeUtils {
     BaseUrl,
     HomeUrl,
+    #[allow(dead_code)]
     AjaxUrl,
     SearchUrl,
     SearchSuggestionUrl,
@@ -546,24 +542,5 @@ impl HiAnimeUtils {
             .unwrap_or(1);
 
         total_pages
-    }
-
-    pub fn get_genres_filter_value(genre_names: Vec<String>) -> Option<String> {
-        if genre_names.is_empty() {
-            return None;
-        };
-
-        let value = genre_names
-            .iter()
-            .filter_map(|name| {
-                SEARCH_PAGE_FILTERS
-                    .genres_id_map
-                    .get(name.as_str())
-                    .map(|s| s.to_string())
-            })
-            .collect::<Vec<String>>()
-            .join(",");
-
-        Some(value)
     }
 }
