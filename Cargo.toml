@@ -1,6 +1,6 @@
 [package]
 name = "enma"
-version = "0.9.1"
+version = "0.9.2"
 edition = "2021"
 license = "MIT"
 readme = "README.md"
@@ -9,7 +9,7 @@ homepage = "https://lib.rs/enma"
 repository = "https://github.com/DaioEnma/enma.rs"
 description = "A crate serving anime and manga information 📦"
 keywords = ["anime", "manga", "rust", "scraper", "otaku"]
-categories = ["text-processing", "web-programming", "entertainment"]
+categories = ["text-processing", "web-programming"]
 
 [dependencies]
 chrono = "0.4.39"
