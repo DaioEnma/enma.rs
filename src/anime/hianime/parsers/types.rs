@@ -7,9 +7,9 @@ use crate::anime::hianime::{
     },
     SearchFilters,
 };
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedHomePage {
     pub genres: Vec<String>,
     pub top10_animes: Top10AnimesWithPeriod,
@@ -23,12 +23,12 @@ pub struct ScrapedHomePage {
     pub latest_completed_animes: Vec<LatestCompletedAnime>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedSearchSuggestion {
     pub suggestions: Vec<AnimeSearchSuggestion>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedAZList {
     pub animes: Vec<Anime>,
     pub sort_option: &'static str,
@@ -37,12 +37,12 @@ pub struct ScrapedAZList {
     pub has_next_page: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedQtipInfo {
     pub anime: QtipAnime,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedCategoryAnime {
     pub category_name: String,
     pub animes: Vec<Anime>,
@@ -53,7 +53,7 @@ pub struct ScrapedCategoryAnime {
     pub top10_animes: Top10AnimesWithPeriod,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedProducerAnime {
     pub producer_name: String,
     pub animes: Vec<Anime>,
@@ -64,7 +64,7 @@ pub struct ScrapedProducerAnime {
     pub top10_animes: Top10AnimesWithPeriod,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedGenreAnime {
     pub genre_name: String,
     pub animes: Vec<Anime>,
@@ -75,13 +75,13 @@ pub struct ScrapedGenreAnime {
     pub top_airing_animes: Vec<TopAiringAnime>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedAnimeEpisodes {
     pub total_episodes: Option<u16>,
     pub episodes: Vec<AnimeEpisode>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedEpisodeServers {
     pub anime_episode_id: &'static str,
     pub episode_number: Option<u16>,
@@ -90,12 +90,12 @@ pub struct ScrapedEpisodeServers {
     pub raw: Vec<RawEpisode>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedSchedule {
     pub animes: Vec<ScheduledAnime>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Debug, Default)]
 pub struct ScrapedAnimeInfo {
     pub anime: AnimeDetailedInfo,
     pub related_animes: Vec<RelatedAnime>,

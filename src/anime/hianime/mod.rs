@@ -1,6 +1,6 @@
 use once_cell::sync::Lazy;
 use regex::Regex;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use std::{
     collections::{HashMap, HashSet},
     fmt,
@@ -193,7 +193,7 @@ impl Serialize for SearchFilters {
 }
 
 /// different types of seach filter
-#[derive(Serialize, Deserialize, Debug, Eq, Clone)]
+#[derive(Serialize, Debug, Eq, Clone)]
 #[serde(untagged)]
 pub enum SearchFilter {
     Type(String),

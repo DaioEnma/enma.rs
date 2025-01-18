@@ -1,5 +1,5 @@
 use reqwest::StatusCode;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use thiserror::Error as ThisError;
 
 const ANSI_ESC_CODE_COLOR_RED: &str = "\x1b[31m";
@@ -8,7 +8,7 @@ const ANSI_ESC_CODE_COLOR_RESET: &str = "\x1b[0m";
 const DEFAULT_ERROR_MESSAGE: &str = "Something went wrong";
 
 /// Internal generic error implementation
-#[derive(Debug, Serialize, Deserialize, ThisError)]
+#[derive(Debug, Serialize, ThisError)]
 #[error(
     "{ANSI_ESC_CODE_COLOR_RED}{{\n  \"provider_parser\": \"{}\",\n  \"message\": \"{}\",\n  \"status\": {}\n}}{ANSI_ESC_CODE_COLOR_RESET}",
     provider_parser,
