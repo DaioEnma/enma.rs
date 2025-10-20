@@ -22,6 +22,7 @@ pub struct Intro {
 }
 
 #[derive(Serialize, Debug, Default)]
+#[allow(non_snake_case)]
 pub struct Source {
     pub url: String,
     pub isM3U8: bool,
@@ -34,6 +35,7 @@ pub struct MegacloudKeysRepoResponse {
 }
 
 #[derive(Deserialize, Debug)]
+#[allow(dead_code)]
 pub struct DecryptedSourceData {
     pub sources: DecryptedSourceDataSourceType,
     pub tracks: Vec<DecryptedSourceDataTrack>,

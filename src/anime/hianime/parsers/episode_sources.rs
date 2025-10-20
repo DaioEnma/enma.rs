@@ -1,6 +1,5 @@
-use std::fmt::format;
 use crate::{
-    anime::{extractors::megacloud::Megacloud, hianime::{types::{Category, EpisodeInfo, Server}, utils::HiAnimeUtils, Scraper}},
+    anime::{extractors::megacloud::Megacloud, hianime::{types::{Category, Server}, utils::HiAnimeUtils, Scraper}},
     utils::{EnmaClient, EnmaUtils},
     EnmaError, EnmaResult,
 };
