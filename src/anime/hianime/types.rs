@@ -284,4 +284,39 @@ impl Server {
             Server::FileMoon => "filemoon",
         }
     }
+
+    pub fn index(&self) -> u16 {
+        match self {
+            Server::VidStreaming => 4,
+            Server::MegaCloud => 0,
+            Server::StreamSB => 5,
+            Server::StreamTape => 3,
+            Server::VidCloud => 1,
+            Server::AsianLoad => 0,
+            Server::GogoCDN => 0,
+            Server::MixDrop => 0,
+            Server::UpCloud => 0,
+            Server::VizCloud => 0,
+            Server::MyCloud => 0,
+            Server::FileMoon => 0,
+        }
+    }
+}
+
+#[derive(Debug, Serialize)]
+pub enum Category {
+    Sub,
+    Dub,
+    Raw,
+}
+
+#[allow(dead_code)] // TODO -> remove this
+impl Category {
+    pub fn value(&self) -> &'static str {
+        match self {
+            Category::Sub => "sub",
+            Category::Dub => "dub",
+            Category::Raw => "raw",
+        }
+    }
 }
